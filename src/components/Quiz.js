@@ -31,26 +31,63 @@ const questions = [
 function Quiz() {
     const [questionIndex, setQuestionIndex] = useState(0);
     const [answer, setAnswer] = useState("");
-    const [attempts, setAttempts] = useState(0);
+    const [attempts, setAttempts] = useState(3);
     const [gameOver, setGameOver] = useState(false);
     const [score, setScore] = useState(0);
-  
+    {console.log("attemps"+ " "  +attempts)}
+    {console.log("game over"+gameOver)}
+
+    const handleClick = ()=>{
+      {console.log( "Inside handle "+ " " +attempts)}
+      if(attempts ==  1) {
+        setGameOver(true)
+        return
+      }
+
+      if(questionIndex == questions.length-1){
+        setGameOver(true);
+        return
+      }
+     const ans =  questions[questionIndex].answer.toLowerCase() == answer;
+     {console.log(ans)}
+     if (ans){
+      setScore((prev)=>prev = prev+1)
+      setQuestionIndex((prev)=>prev = prev+1)
+      setAnswer("")
+     }
+     else{
+      setAttempts((prev)=>prev = prev-1)
+     }
+    }
+
+    const handleRetry = ()=>{
+      setGameOver((prev)=>!prev)
+      setQuestionIndex(0)
+      setAnswer("")
+      setAttempts(3)
+      setScore(0)
+
+
+    }
+
+
+
     if (gameOver) {
       return (
         <div className="game-over-container">
           <h1 className="game-over-heading">Game Over</h1>
-          <p className="score-para">Your score: score/questions.length</p>
-          <button className="retry-btn">Retry</button>
+          <p className="score-para">Your score: {score/questions.length}</p>
+          <button onClick={handleRetry} className="retry-btn">Retry</button>
         </div>
       );
     }
   
     return (
       <div>
-        <h1 className="question-text">questionText</h1>
-        <input className="answer-input"/><br />
-        <button className="submit-btn">Submit</button>
-        <p className="attempt-alert">Incorrect. Two attempts remaining.</p>
+        <h1 className="question-text">{questions[questionIndex].question}</h1>
+        <input onChange={(e)=>{setAnswer(e.target.value)}} value={answer} className="answer-input"/><br />
+        <button onClick={handleClick} className="submit-btn">Submit</button>
+         {(attempts<3 && attempts >0) &&<p className="attempt-alert">{`Incorrect. ${attempts == 2?"Two":attempts== 1?"One":""} attempts remaining.`}</p>}
       </div>
     );
 }
