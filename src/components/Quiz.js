@@ -53,6 +53,7 @@ function Quiz() {
      if (ans){
       setScore((prev)=>prev = prev+1)
       setQuestionIndex((prev)=>prev = prev+1)
+      setAttempts(3)
       setAnswer("")
      }
      else{
@@ -87,7 +88,7 @@ function Quiz() {
         <h1 className="question-text">{questions[questionIndex].question}</h1>
         <input onChange={(e)=>{setAnswer(e.target.value)}} value={answer} className="answer-input"/><br />
         <button onClick={handleClick} className="submit-btn">Submit</button>
-         {(attempts<3 && attempts >0) &&<p className="attempt-alert">{`Incorrect. ${attempts == 2?"Two":attempts== 1?"One":""} attempts remaining.`}</p>}
+         {(attempts<3 && attempts >0) &&<p className="attempt-alert">{`Incorrect. ${attempts == 2?"Two attempts remaining.":attempts== 1?"One attempt remaining.":""}`}</p>}
       </div>
     );
 }
